@@ -12,6 +12,7 @@
     "dropzone": "^4.2.0",
     "electron-packager": "^5.1.1",
     "electron-prebuilt": "^0.34.3",
+    "jquery": "^2.1.4",
     "mkdirp": "^0.5.1",
     "parameterize": "0.0.7",
     "psd": "^3.1.0",

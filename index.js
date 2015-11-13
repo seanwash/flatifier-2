@@ -41,7 +41,7 @@ app.on('ready', function() {
 		mainWindow = null;
 	});
 
-	ipc.on('fileAddedEvent', function(event, filePath) {
-		flatifier.exportIcons(filePath);
+	ipc.on('fileAddedEvent', function(event, filePath, setName) {
+		flatifier.exportIcons(filePath, setName);
 	});
 });

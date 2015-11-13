@@ -5,6 +5,14 @@
 	<title>Flatifier 2</title>
 
 	<style type="text/css">
+		* {
+			box-sizing: border-box;
+		}
+
+		html {
+			-webkit-font-smoothing: antialiased;
+		}
+
 		body,
 		html {
 			font-family: sans-serif;
@@ -15,28 +23,39 @@
 
 		.brand {
 			display: block;
-			margin: 100px auto;
+			margin: 100px auto 80px;
 		}
 
-		#dropzone-field {
+		.field {
+			width: 500px;
+			margin: 0 auto;
+		}
+
+		.field input {
+			border-radius: 3px 3px 0 0;
+			border: none;
+			font-family: sans-serif;
+			font-size: 18px;
+			padding: 30px 20px;
+			width: 100%;
+		}
+
+		.dropzone-field {
 			background-color: #3ec295;
 			width: 500px;
 			height: 100px;
-			margin: 50px auto;
+			margin: 0 auto;
 			cursor: pointer;
-			border-radius: 3px;
+			border-radius: 0 0 3px 3px;
 			color: #fff;
 		}
 
-		#dropzone-field p {
+		.dropzone-field p {
+			font-size: 18px;
 			text-align: center;
 			line-height: 100px;
 			margin: 0;
 			padding: 0;
-		}
-
-		#image {
-			text-align: center;
 		}
 	</style>
 </head>
@@ -44,23 +63,26 @@
 <body>
 	<img class="brand" src="assets/flaticons-logo-brand.svg" alt="Flaticons" />
 
-	<div id="dropzone-field">
-		<p>Click here to select your set PSD file</p>
-		<input type="file" style="display:none;">
-	</div>
-
-	<div id="image"></div>
-	<pre id="data"></pre>
+	<form class="icon-form">
+		<div class="field">
+			<input type="text" name="setname" value="" placeholder="First, set the icon set name">
+		</div>
+		<div class="field dropzone-field">
+			<p>Then, click here to select your set PSD file</p>
+			<input type="file" style="display:none;">
+		</div>
+	</form>
 
 	<script type="text/javascript">
-		(function() {
-			var ipc = require('ipc'),
-				Dropzone = require('dropzone');
+		var ipc = require('ipc'),
+			$ = jQuery = require('jquery'),
+			Dropzone = require('dropzone');
 
-			document.querySelector('#dropzone-field').addEventListener('click', onClick, true);
-			document.querySelector('#dropzone-field').addEventListener('dragover', onDragOver, true);
-			document.querySelector('#dropzone-field').addEventListener('drop', onDrop, true);
-			document.querySelector('#dropzone-field input').addEventListener('change', onDrop, true);
+		$('document').ready(function() {
+			document.querySelector('.dropzone-field').addEventListener('click', onClick, true);
+			document.querySelector('.dropzone-field').addEventListener('dragover', onDragOver, true);
+			document.querySelector('.dropzone-field').addEventListener('drop', onDrop, true);
+			document.querySelector('.dropzone-field input').addEventListener('change', onDrop, true);
 
 			function onDragOver(e) {
 				console.log('onDragOver');
@@ -70,18 +92,18 @@
 			}
 
 			function onDrop(e) {
-				console.log('onDrop', e);
 				e.stopPropagation();
 				e.preventDefault();
 
 				file = e.srcElement.files[0];
-				ipc.send('fileAddedEvent', file.path);
+				setName = $('[name="setname"]').val()
+				ipc.send('fileAddedEvent', file.path, setName);
 			}
 
 			function onClick(e) {
-				document.querySelector('#dropzone-field input').click();
+				document.querySelector('.dropzone-field input').click();
 			}
-		}());
+		})
 	</script>
 </body>
 
