@@ -10,6 +10,7 @@
   "license": "ISC",
   "devDependencies": {
     "dropzone": "^4.2.0",
+    "electron-packager": "^5.1.1",
     "electron-prebuilt": "^0.34.3",
     "mkdirp": "^0.5.1",
     "parameterize": "0.0.7",
