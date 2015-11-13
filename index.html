@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Flatifier 2</title>
+
+	<style type="text/css">
+		body,
+		html {
+			font-family: sans-serif;
+			background-color: #1E3C4E;
+			padding: 0;
+			margin: 0;
+		}
+
+		.brand {
+			display: block;
+			margin: 100px auto;
+		}
+
+		#dropzone-field {
+			background-color: #3ec295;
+			width: 500px;
+			height: 100px;
+			margin: 50px auto;
+			cursor: pointer;
+			border-radius: 3px;
+			color: #fff;
+		}
+
+		#dropzone-field p {
+			text-align: center;
+			line-height: 100px;
+			margin: 0;
+			padding: 0;
+		}
+
+		#image {
+			text-align: center;
+		}
+	</style>
+</head>
+
+<body>
+	<img class="brand" src="assets/flaticons-logo-brand.svg" alt="Flaticons" />
+
+	<div id="dropzone-field">
+		<p>Click here to select your set PSD file</p>
+		<input type="file" style="display:none;">
+	</div>
+
+	<div id="image"></div>
+	<pre id="data"></pre>
+
+	<script type="text/javascript">
+		(function() {
+			var ipc = require('ipc'),
+				Dropzone = require('dropzone');
+
+			document.querySelector('#dropzone-field').addEventListener('click', onClick, true);
+			document.querySelector('#dropzone-field').addEventListener('dragover', onDragOver, true);
+			document.querySelector('#dropzone-field').addEventListener('drop', onDrop, true);
+			document.querySelector('#dropzone-field input').addEventListener('change', onDrop, true);
+
+			function onDragOver(e) {
+				console.log('onDragOver');
+				e.stopPropagation();
+				e.preventDefault();
+				e.dataTransfer.dropEffect = 'copy';
+			}
+
+			function onDrop(e) {
+				console.log('onDrop', e);
+				e.stopPropagation();
+				e.preventDefault();
+
+				file = e.srcElement.files[0];
+				ipc.send('fileAddedEvent', file.path);
+			}
+
+			function onClick(e) {
+				document.querySelector('#dropzone-field input').click();
+			}
+		}());
+	</script>
+</body>
+
+</html>
